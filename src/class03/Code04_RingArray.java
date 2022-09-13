@@ -1,5 +1,9 @@
 package class03;
 
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Stack;
+
 public class Code04_RingArray {
 
 	public static class MyQueue {
@@ -44,6 +48,52 @@ public class Code04_RingArray {
 		private int nextIndex(int i) {
 			return i < limit - 1 ? i + 1 : 0;
 		}
+
+	}
+
+	public static boolean isEqual(Integer o1, Integer o2) {
+
+		if (o1 == null && o2 != null) {
+			return false;
+		}
+		if (o1 != null && o2 == null) {
+			return false;
+		}
+
+		if (o1 == null && o2 == null) {
+			return true;
+		}
+		return o1.equals(o2);
+	}
+
+	public static void main(String[] args) {
+		int testTimes = 10000;
+		int maxValue = 1000;
+		int oneTestDataNum = 1000;
+
+		System.out.println("test start !!!");
+		for (int i = 0; i < testTimes; i++) {
+			Queue<Integer> queue = new LinkedList<>();
+			MyQueue myQueue = new MyQueue(oneTestDataNum);
+
+			for (int j = 0; j < oneTestDataNum; j++) {
+				int numq = (int) (Math.random() * maxValue);
+				if(queue.size() == 0){
+					queue.add(numq);
+					myQueue.push(numq);
+				} else if (Math.random() < 0.5) {
+					queue.add(numq);
+					myQueue.push(numq);
+				}else{
+					if (!isEqual(queue.poll(), myQueue.pop())) {
+						System.out.println("Oops2!!!");
+					}
+				}
+			}
+
+		}
+		System.out.println("test end !!!");
+
 
 	}
 

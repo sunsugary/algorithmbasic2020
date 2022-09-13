@@ -72,11 +72,7 @@ public class HeapGreater<T> {
 
 	// 请返回堆上的所有元素
 	public List<T> getAllElements() {
-		List<T> ans = new ArrayList<>();
-		for (T c : heap) {
-			ans.add(c);
-		}
-		return ans;
+		return new ArrayList<>(heap);
 	}
 
 	private void heapInsert(int index) {

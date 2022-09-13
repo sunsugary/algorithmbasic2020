@@ -134,48 +134,66 @@ public class Code02_EveryStepShowBoss {
 
 	// 干完所有的事，模拟，不优化
 	public static List<List<Integer>> compare(int[] arr, boolean[] op, int k) {
+		//记录每一个顾客的信息，key为顾客的ID，value为顾客信息
 		HashMap<Integer, Customer> map = new HashMap<>();
+		//候选区顾客
 		ArrayList<Customer> cands = new ArrayList<>();
+		//或将区顾客
 		ArrayList<Customer> daddy = new ArrayList<>();
+		//每个时间段所有的获奖名单
 		List<List<Integer>> ans = new ArrayList<>();
 		for (int i = 0; i < arr.length; i++) {
+			//顾客ID
 			int id = arr[i];
+			//购买或退款
 			boolean buyOrRefund = op[i];
 			if (!buyOrRefund && !map.containsKey(id)) {
+				//当顾客退款且顾客信息表中没有顾客的信息的时候直接将当前获奖区的信息返回
 				ans.add(getCurAns(daddy));
 				continue;
 			}
-			// 没有发生：用户购买数为0并且又退货了
-			// 用户之前购买数是0，此时买货事件
+			// 没有发生：用户购买数=0，此时又退货了
+			// 用户之前购买数=0，此时买货事件
 			// 用户之前购买数>0， 此时买货
 			// 用户之前购买数>0, 此时退货
 			if (!map.containsKey(id)) {
+				//当顾客购买 且 顾客信息表中没有顾客的信息 先创建一个顾客信息放到顾客表中
 				map.put(id, new Customer(id, 0, 0));
 			}
 			// 买、卖
 			Customer c = map.get(id);
+			//取出当前顾客，再对该顾客添加购买或退货的信息
 			if (buyOrRefund) {
+				//如果是买顾客购买数量+1
 				c.buy++;
 			} else {
+				//如果是卖顾客购买数量-1
 				c.buy--;
 			}
 			if (c.buy == 0) {
+				//当修改完顾客购买退货信息，判断是否最终购买数量为0如果最终购买数量为0，则直接再顾客信息表中删除该顾客的信息
 				map.remove(id);
 			}
 			// c
 			// 下面做
 			if (!cands.contains(c) && !daddy.contains(c)) {
+				//如果当前顾客存在于候选区或得奖区任意一个区，则更新顾客的信息
 				if (daddy.size() < k) {
+					//当获奖区的数量小于最大获奖数量的时候，当前顾客直接进入到获奖区
 					c.enterTime = i;
 					daddy.add(c);
 				} else {
+					//当获奖区已经满了，顾客先进入到候选区，最后对候选区和获奖区的进行更新
 					c.enterTime = i;
 					cands.add(c);
 				}
 			}
+			//清除两个奖区所有购买数为0的顾客信息
 			cleanZeroBuy(cands);
 			cleanZeroBuy(daddy);
+			//对候选区的顾客进行排序，购买数量多的排前面，如果购买数量一样则先进入候选区的排前面
 			cands.sort(new CandidateComparator());
+			//对获奖区的顾客进行排序，购买数量少的排前面，如果购买数量一样，先进入获奖区的排前面
 			daddy.sort(new DaddyComparator());
 			move(cands, daddy, k, i);
 			ans.add(getCurAns(daddy));
@@ -184,21 +202,25 @@ public class Code02_EveryStepShowBoss {
 	}
 
 	public static void move(ArrayList<Customer> cands, ArrayList<Customer> daddy, int k, int time) {
+		//如果候选区的没有顾客，则直接返回不用调整
 		if (cands.isEmpty()) {
 			return;
 		}
-		// 候选区不为空
 		if (daddy.size() < k) {
+			// 候选区不为空 且 得奖区的获奖人数小于最大获奖人数
 			Customer c = cands.get(0);
+			// 由于候选区已经排序好了，所以直接将候选区的0号位置的人放进获奖区 并更新进入时间 最后移除它在候选区的信息
 			c.enterTime = time;
 			daddy.add(c);
 			cands.remove(0);
 		} else { // 等奖区满了，候选区有东西
 			if (cands.get(0).buy > daddy.get(0).buy) {
+				//此时是获奖区满了，并且候选区的0号位置能够 干掉 获奖区的0号位置
 				Customer oldDaddy = daddy.get(0);
 				daddy.remove(0);
 				Customer newDaddy = cands.get(0);
 				cands.remove(0);
+				//此时需要交换两个区0号位置的顾客
 				newDaddy.enterTime = time;
 				oldDaddy.enterTime = time;
 				daddy.add(newDaddy);

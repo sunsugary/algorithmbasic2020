@@ -10,6 +10,7 @@ public class Code03_CountSort {
 			return;
 		}
 		int max = Integer.MIN_VALUE;
+		//找到数组中的最大值
 		for (int i = 0; i < arr.length; i++) {
 			max = Math.max(max, arr[i]);
 		}
@@ -82,30 +83,50 @@ public class Code03_CountSort {
 	}
 
 	// for test
+//	public static void main(String[] args) {
+//		int testTime = 500000;
+//		int maxSize = 100;
+//		int maxValue = 150;
+//		boolean succeed = true;
+//		for (int i = 0; i < testTime; i++) {
+//			int[] arr1 = generateRandomArray(maxSize, maxValue);
+//			int[] arr2 = copyArray(arr1);
+//			countSort(arr1);
+//			comparator(arr2);
+//			if (!isEqual(arr1, arr2)) {
+//				succeed = false;
+//				printArray(arr1);
+//				printArray(arr2);
+//				break;
+//			}
+//		}
+//		System.out.println(succeed ? "Nice!" : "Fucking fucked!");
+//
+//		int[] arr = generateRandomArray(maxSize, maxValue);
+//		printArray(arr);
+//		countSort(arr);
+//		printArray(arr);
+//
+//	}
+
 	public static void main(String[] args) {
-		int testTime = 500000;
-		int maxSize = 100;
-		int maxValue = 150;
-		boolean succeed = true;
-		for (int i = 0; i < testTime; i++) {
-			int[] arr1 = generateRandomArray(maxSize, maxValue);
-			int[] arr2 = copyArray(arr1);
-			countSort(arr1);
-			comparator(arr2);
-			if (!isEqual(arr1, arr2)) {
-				succeed = false;
-				printArray(arr1);
-				printArray(arr2);
-				break;
+		int maxValue = 200;
+		int maxLength = 250;
+		int testTimes = 1000;
+		for (int i = 0; i < testTimes; i++) {
+			int[] array1 = generateRandomArray(maxValue, maxLength);
+			int[] array2 = new int[array1.length];
+			System.arraycopy(array1, 0, array2, 0, array1.length);
+			countSort(array1);
+			Arrays.sort(array2);
+			for (int j = 0; j < array1.length; j++) {
+				if (array1[j] != array2[j]) {
+					System.out.println("出错了！");
+					printArray(array1);
+					printArray(array2);
+				}
 			}
 		}
-		System.out.println(succeed ? "Nice!" : "Fucking fucked!");
-
-		int[] arr = generateRandomArray(maxSize, maxValue);
-		printArray(arr);
-		countSort(arr);
-		printArray(arr);
-
 	}
 
 }

@@ -37,6 +37,7 @@ public class Code04_RadixSort {
 			// count[1] 当前位(d位)是(0和1)的数字有多少个
 			// count[2] 当前位(d位)是(0、1和2)的数字有多少个
 			// count[i] 当前位(d位)是(0~i)的数字有多少个
+			// 当前d=1 则按照个位上的数字统计这些数字分别在0~9这十个桶中哪一个
 			int[] count = new int[radix]; // count[0..9]
 			for (i = L; i <= R; i++) {
 				// 103  1   3

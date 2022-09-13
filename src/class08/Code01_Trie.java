@@ -7,9 +7,9 @@ public class Code01_Trie {
 	// 原来代码是对的，但是既然找到了直接测试的链接，那就直接测吧
 	// 这个链接上要求实现的功能和课上讲的完全一样
 	// 该前缀树的路用数组实现
-	class Trie {
+	static class Trie {
 
-		class Node {
+		static class Node {
 			public int pass;
 			public int end;
 			public Node[] nexts;
@@ -97,6 +97,19 @@ public class Code01_Trie {
 			}
 			return node.pass;
 		}
+	}
+
+	public static void main(String[] args) {
+		Trie trie = new Trie();
+		trie.insert("apple");               // 插入 "apple"。
+		trie.insert("apple");               // 插入另一个 "apple"。
+		System.out.println(trie.countWordsEqualTo("apple"));    // 有两个 "apple" 实例，所以返回 2。
+		System.out.println(trie.countWordsStartingWith("app")); // "app" 是 "apple" 的前缀，所以返回 2。
+		trie.erase("apple");                // 移除一个 "apple"。
+		System.out.println(trie.countWordsEqualTo("apple"));    // 现在只有一个 "apple" 实例，所以返回 1。
+		System.out.println(trie.countWordsStartingWith("app")); // 返回 1
+		trie.erase("apple");                // 移除 "apple"。现在前缀树是空的。
+		System.out.println(trie.countWordsStartingWith("app")); // 返回 0
 	}
 
 }

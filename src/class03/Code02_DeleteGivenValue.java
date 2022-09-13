@@ -35,4 +35,19 @@ public class Code02_DeleteGivenValue {
 		return head;
 	}
 
+	public static void main(String[] args) {
+		Node head = new Node(4);
+		head.next = new Node(4);
+		head.next.next = new Node(2);
+		head.next.next.next = new Node(3);
+		head.next.next.next.next = new Node(4);
+		head.next.next.next.next.next = new Node(4);
+		head.next.next.next.next.next.next = new Node(5);
+		Node node = removeValue(head, 4);
+		while (node != null){
+			System.out.print(node.value);
+			node = node.next;
+		}
+	}
+
 }
